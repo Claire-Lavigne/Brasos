@@ -1,0 +1,5 @@
+/vendor
+/wp
+content/debug.log
+content/uploads/
+wp-config.php

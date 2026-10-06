@@ -1,0 +1,32 @@
+# WordPress is installed in the wp/ directory below the document root.
+# These PHP limits apply only when Apache is using mod_php. For PHP-FPM,
+# configure the same values in php.ini or .user.ini instead.
+<IfModule mod_php.c>
+    # Maximum size of an individual uploaded file.
+    php_value upload_max_filesize 64M
+    # Maximum size of the complete POST request, including uploaded files.
+    php_value post_max_size 64M
+    # Maximum time, in seconds, that a PHP script may run.
+    php_value max_execution_time 300
+    # Maximum time, in seconds, PHP may spend parsing request data.
+    php_value max_input_time 300
+</IfModule>
+
+# BEGIN WordPress
+# The directives between "BEGIN WordPress" and "END WordPress" are
+# generated dynamically and should only be modified through WordPress filters.
+# Any changes between these markers may be overwritten.
+<IfModule mod_rewrite.c>
+    # Enable Apache URL rewriting for WordPress permalinks.
+    RewriteEngine On
+    # Pass the Authorization header through to WordPress and its plugins.
+    RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+    # Do not rewrite requests that already target WordPress's front controller.
+    RewriteRule ^index\.php$ - [L]
+    # Leave existing files and directories untouched.
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    # Send every other request to WordPress's front controller.
+    RewriteRule . index.php [L]
+</IfModule>
+# END WordPress
